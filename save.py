@@ -1,14 +1,17 @@
 import csv
 from networkconnection import internet_on
 import json
+from usim800 import sim800
 from rename import rename
 from uvid import getuvid
 import requests
 import time
 import delete
 uid = getuvid()
-
-
+GSM = False
+# if GSM:
+#     gsm = sim800(baudrate=9600, path="/dev/ttys1")
+#     gsm.requests.APN = "www"
 def createfile(file_name):
 
     with open(file_name, mode='w') as csv_file:
@@ -67,7 +70,9 @@ def sentsavedata(file_name, temp_file, url,vers):
                     "pv2_power": row[9],
                     "pv3_power":row[10],
                     "daily_energy":row[11],
-                    "other": str({"runtime_energy": row[12],
+                    "total_energy":  row[12],
+                    "annual_energy": 0,
+                    "other": str({
                                   "month_0": row[13],
                                   "month_1": row[14],
                                   "month_2": row[15],
@@ -92,8 +97,11 @@ def sentsavedata(file_name, temp_file, url,vers):
 
                 try:
                     print(data)
-                    r = requests.post(url, data=json.dumps(data),
+                    if not GSM:
+                        r = requests.post(url, data=json.dumps(data),
                                       headers=headers, timeout=1)
+                    else :
+                        r = gsm.requests.post(url=url,data=json.dump(data))
                     print(r)
                     print(r.content)
                     time.sleep(2)

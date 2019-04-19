@@ -21,7 +21,7 @@ from pyA20.gpio import port
 from DS3231 import DS3231
 from onoff import *
 dt = DS3231(0)
-#dt.readTime()
+dt.readTime()
 led = port.PA14
 led1 = port.PA19
 led2 = port.PA18
@@ -31,13 +31,13 @@ gpio.setcfg(led, gpio.OUTPUT)
 gpio.setcfg(led1, gpio.OUTPUT)
 gpio.setcfg(led2, gpio.OUTPUT)
 vers = 1
-GSM = True
+GSM = False
 
 if GSM:
     gsm = sim800(baudrate=9600, path="/dev/ttys1")
     gsm.requests.APN = "www"
-slave_ids = find_slave_id()
-slave_ids = [1]
+#slave_ids = find_slave_id()
+slave_ids = [1,2]
 uid = str(getuvid())
 print(uid)
 path = '/root/orangepizerodelta/'
@@ -128,19 +128,21 @@ while True:
         print(base_path)
         restart.reboot()
         update(base_path)
+        print(slave_ids)
         for slave_id in slave_ids:
             for i in registers.keys():
                 initmodbusandread(i)
             timesend = str(dt.readTime().strftime("%Y-%m-%d %H:%M:%S"))
             # timesend = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             print(timesend)
+  
             # onoff()
             print(uid + "{0:0=2d}".format(slave_id))
             data = setData(uid, slave_id, registers, timesend, vers)
             sdata = setCsvData(uid, slave_id, registers, timesend, vers)
             headers = {'Content-type': 'application/json'}
             senddata(file_name, url, sdata, headers, data, vers)
-        time.sleep(10*2)
+        time.sleep(10*20)
     except Exception as e:
         print(e)
         restart.reboot()

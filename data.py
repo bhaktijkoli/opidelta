@@ -75,9 +75,9 @@ def setData(uid, slave_id, registers, timesend, vers):
     data = {
         "uvid": uid,
         "slave": slave_id,
-        "pv1_voltage": int(registers.get(45056)[5]["value"])/10,
-        "pv2_voltage": int(registers.get(45059)[5]["value"])/10,
-        "pv3_voltage": int(registers.get(45062)[5]["value"])/10,
+        "pv1_voltage": int(registers.get(45056)[5]["value"]),
+        "pv2_voltage": int(registers.get(45059)[5]["value"]),
+        "pv3_voltage": int(registers.get(45062)[5]["value"]),
         "pv1_current": int(registers.get(45057)[5]["value"]),
         "pv2_current": int(registers.get(45060)[5]["value"]),
         "pv3_current": int(registers.get(45063)[5]["value"]),

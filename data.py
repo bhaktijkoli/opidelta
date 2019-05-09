@@ -86,7 +86,7 @@ def setData(uid, slave_id, registers, timesend, vers):
         "pv3_power": int(registers.get(45064)[5]["value"])/100,
         "daily_energy": int(registers.get(1071)[5]["value"])/100,
         "total_energy":  runtime_energy,
-        "annual_energy": 0,
+        "annual_energy": month_0 + month_1 + month_2 + month_3 + month_4 + month_5 + month_6 + month_7 + month_8 + month_9 + month_10 + month_11 + month_12,
         "offline": 0,
         "recordedAt": timesend,
         "other": str({
@@ -107,7 +107,7 @@ def setData(uid, slave_id, registers, timesend, vers):
             "vers": vers})
 
     }
- 
+
     return data
 
 
